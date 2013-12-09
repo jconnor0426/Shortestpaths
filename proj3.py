@@ -42,9 +42,7 @@ def main():
 	#Handle Undirected Graphs by adding an edge in the reverse
 	#direction for each edge in the edgelist. Account for that
 	#in the weights dictionary as well
-	print( "[!]DEBUG {}".format( type ) )
 	if type[0] == 'UD':
-		print( "[!]DEBUG {}".format( type ) )
 		reversed = []
 		for each in edgelist: 
 			reversed.append( ( each[1], each[0] ) )
