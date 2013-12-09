@@ -17,6 +17,7 @@ def createAdjacencyList( edgeList ):
 #Dijkstra's Algorithm!
 ####################################################
 
+#Initialization of the Graph
 def initSingleSource( adjList, source ):
 	#In the creation of the adjacency list, 
 	#All verices d and p are set to default. 
@@ -27,6 +28,14 @@ def initSingleSource( adjList, source ):
 		print( "[!]Invalid source, not found in graph" )
 		exit(0)
 
+#Relaxing Method
+def relax( u, v, weights, graph ):
+	#Format of Graph Dictionary:
+	#	graph[ u ] = [ distance, parent, adjacency list ]
+
+	if graph[ v ][0] > ( graph[ u ][0] + weights[ (u, v) ] ):
+		graph[ v ][0] = ( graph[ u ][0] + weights[ (u, v) ] )
+		graph[ v ][1] = u
 
 def dijkstra( adjList, weightList ):
 	print( "Do Stuff" )
@@ -45,7 +54,7 @@ def createEdgeList( filename ):
 	for each in lines:			#line format: Start_Vertex End_Vertex Weight
 		tup = each.split()
 		edgeList.append( (tup[0], tup[1])  )
-		weights[ (tup[0], tup[1] ) ] = tup[2]
+		weights[ (tup[0], tup[1] ) ] = int( tup[2] )
 	return type, edgeList, weights
 
 
@@ -91,9 +100,10 @@ def main():
 	#Check that given source exists
 	initSingleSource( graph, source )
 
-	for key in graph: print( "{} => {} ".format( key, graph[key] ) )
 	#Run Dijkstras
 
+	relax( 'A', 'C', weights, graph )
+	for key in graph: print( "{} => {} ".format( key, graph[key] ) )
 	#Run Shortest Reliable Path
 
 if __name__ == "__main__" : main()
