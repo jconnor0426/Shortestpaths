@@ -36,12 +36,21 @@ def main():
 		print( "[!]Please enter input file followed by source node, and an integer k")
 		print( "[!]See Readme for more help")
 		exit(1)
+
+	#Check that the file is good
 	file = sys.argv[1]
 	try:
 		open( file, "r" )
 	except:
 		print( "[!]Error Reading File!" )
 		exit(0)
+
+	#check that k is a valid integer
+	try:
+		k_value = int( sys.argv[3] )
+	except:
+		print("[!]Invalid k entry, k must be an integer")
+		exit( 0 )
 
 	type, edgelist, weights = createEdgeList( file )
 	
@@ -55,6 +64,8 @@ def main():
 			weights[ ( each[1], each[0] ) ] = weights[ each ]
 		edgelist.extend( reversed )
 	
+
+
 	#Create the Adjacency List
 
 	#Run Dijkstras
