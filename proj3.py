@@ -37,6 +37,12 @@ def main():
 		print( "[!]See Readme for more help")
 		exit(1)
 	file = sys.argv[1]
+	try:
+		open( file, "r" )
+	except:
+		print( "[!]Error Reading File!" )
+		exit(0)
+
 	type, edgelist, weights = createEdgeList( file )
 	
 	#Handle Undirected Graphs by adding an edge in the reverse
