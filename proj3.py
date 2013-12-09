@@ -1,14 +1,15 @@
 import sys 
 
-#Create Adjacency List to be used in the DFS
+#Create Adjacency List to be used in the Algorithms
+#Adjecency List also has node parent and node's d value
 def createAdjacencyList( edgeList ):
 	adjList = dict()
 	
 	for each in edgeList:
-		adjList[ each[0] ] = []
-		adjList[ each[1] ] = []
+		adjList[ each[0] ] = (float('inf'), '',  [] )
+		adjList[ each[1] ] = (float('inf'), '',  [] )
 	for each in edgeList:
-		adjList[ each[0] ].append( each[1] )
+		adjList[ each[0] ][2].append( each[1] )
 
 	return adjList
 
@@ -76,7 +77,9 @@ def main():
 		exit(0)
 
 	#Create the Adjacency List
+	graph = createAdjacencyList( edgelist )
 
+	for key in graph: print( "{} => {} ".format( key, graph[key] ) )
 	#Run Dijkstras
 
 	#Run Shortest Reliable Path
