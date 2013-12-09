@@ -64,7 +64,16 @@ def main():
 			weights[ ( each[1], each[0] ) ] = weights[ each ]
 		edgelist.extend( reversed )
 	
-
+	#Check that the source is in the graph
+	source = sys.argv[2]
+	found_Source = False
+	for each in edgelist:
+		if source in each: 
+			found_Source = True
+			break
+	if found_Source == False:
+		print( "[!]Error Source Vertex not found in input" )
+		exit(0)
 
 	#Create the Adjacency List
 
