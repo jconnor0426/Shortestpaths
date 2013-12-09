@@ -91,12 +91,19 @@ def getBiggestSCC( components, adjacencyList ):
 #Takes a filename creates a list of couples
 def createEdgeList( filename ):
 	file = open( filename )
-	lines = file.readlines()
-	edgeList = []
-	for each in lines:
+	lines = file.readlines()	#open and store the file into lines 
+	type = lines[1].split()		#The second line has the type of graph 
+										#Directed / Undirected: D / UD
+	
+	lines = lines[2:]				#only care about the lines that have the actual graph
+	edgeList = []					#Edgelist will be a list of couples
+	weights = dict()				#Weightlist will be a dictionary mapping vertex pairs to weights
+
+	for each in lines:			#line format: Start_Vertex End_Vertex Weight
 		tup = each.split()
-		edgeList.append( (int(tup[0]), int(tup[1]) ) )
-	return edgeList
+		edgeList.append( (tup[0], tup[1])  )
+		weights[ (tup[0], tup[1] ) ] = tup[2]
+	return type, edgeList, weights
 
 #Takes a list of couples representing edges
 #returns a dictionary with vertices as a key, and a pair
@@ -138,23 +145,27 @@ def getBiggestWCC( components ):
 	return (edges, nodes )
 
 def main():
-	if len( sys.argv ) < 2:  
-		print( "[!]Please enter input file with space seperated lists on each line")
+	if len( sys.argv ) < 4:  
+		print( "[!]Please enter input file followed by source node, and an integer k")
+		print( "[!]See Readme for more help")
 		exit(1)
 	file = sys.argv[1]
-	edgelist = createEdgeList( file )
-	reversed = []
-	for each in edgelist: reversed.append( ( each[1], each[0] ) )
+	type, edgelist, weights = createEdgeList( file )
+	
+	#Handle Undirected Graphs by adding an edge in the reverse
+	#direction for each edge in the edgelist. Account for that
+	#in the weights dictionary as well
+	print( "[!]DEBUG {}".format( type ) )
+	if type[0] == 'UD':
+		print( "[!]DEBUG {}".format( type ) )
+		reversed = []
+		for each in edgelist: 
+			reversed.append( ( each[1], each[0] ) )
+			weights[ ( each[1], each[0] ) ] = weights[ each ]
+		edgelist.extend( reversed )
 
-	weakComponents = getWCC( edgelist )
-	a = getBiggestWCC( weakComponents )
-	print("Largest WCC\nNodes - {}\nEdges - {}".format( a[1], a[0] ) ) 	
-	a_list = createAdjacencyList( edgelist )
-	tran_list = createAdjacencyList( reversed )
+	print( edgelist )
+	for key in weights: print( "{} => {}".format( key, weights[key]) )
 
-	strongComponents = getSCC( a_list, tran_list )
-	b, e = getBiggestSCC( strongComponents, a_list )
-	print("Largest SCC\nNodes - {}\nEdges - {}".format( b, e ) ) 	
-	print( "End" )
 
 if __name__ == "__main__" : main()
