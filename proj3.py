@@ -6,13 +6,30 @@ def createAdjacencyList( edgeList ):
 	adjList = dict()
 	
 	for each in edgeList:
-		adjList[ each[0] ] = (float('inf'), '',  [] )
-		adjList[ each[1] ] = (float('inf'), '',  [] )
+		adjList[ each[0] ] = [float('inf'), '',  [] ]
+		adjList[ each[1] ] = [float('inf'), '',  [] ]
 	for each in edgeList:
 		adjList[ each[0] ][2].append( each[1] )
 
 	return adjList
 
+####################################################
+#Dijkstra's Algorithm!
+####################################################
+
+def initSingleSource( adjList, source ):
+	#In the creation of the adjacency list, 
+	#All verices d and p are set to default. 
+	#Just set the source to be 0
+	try:
+		adjList[ source ][0] = 0
+	except:
+		print( "[!]Invalid source, not found in graph" )
+		exit(0)
+
+
+def dijkstra( adjList, weightList ):
+	print( "Do Stuff" )
 
 #Takes a filename creates a list of couples
 def createEdgeList( filename ):
@@ -67,17 +84,12 @@ def main():
 	
 	#Check that the source is in the graph
 	source = sys.argv[2]
-	found_Source = False
-	for each in edgelist:
-		if source in each: 
-			found_Source = True
-			break
-	if found_Source == False:
-		print( "[!]Error Source Vertex not found in input" )
-		exit(0)
 
 	#Create the Adjacency List
 	graph = createAdjacencyList( edgelist )
+	
+	#Check that given source exists
+	initSingleSource( graph, source )
 
 	for key in graph: print( "{} => {} ".format( key, graph[key] ) )
 	#Run Dijkstras
