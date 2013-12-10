@@ -45,15 +45,17 @@ def dijkstra( adjList, weightList ):
 	for key in adjList: pq.append( (adjList[ key ][0 ] , key ) )
 	pq = sorted( pq )
 	while pq:	#This loop will be done V times
-		print( "\t[!]DEBUG PRINT OF QUEUE [!]\n{}".format(pq ) )
 		finishedSet.append( pq[0] ) 	#add it to S. Takes O( 1 )
-		pq = pq[1:]							#extract the min. Takes O( V )
+		pq = pq[1:]
 		#relax all the adjacent verices to the current vertex //This has to run O( E ) times 
 		for neighbor in adjList[ finishedSet[-1][1] ][2] :
 			relax( finishedSet[-1][1] , neighbor, weightList, adjList )
-		for each in adjList: print( "{} => {}".format( each, adjList[each] ) )
-			#for each adjacent vertex, find it in O(V).
-			#update it but dont reorder 
+		#Make sure that PQ is changed correctly
+		for i, each in enumerate(pq): pq[i] = ( adjList[ pq[i][1] ][0] , pq[i][1] )
+		pq = sorted( pq )
+	print( "\t[!]Output" )
+	for each in finishedSet: print(each)
+	for each in adjList: print( "{} is parent of {}".format(adjList[each][1], each) )
 
 #Takes a filename creates a list of couples
 def createEdgeList( filename ):
