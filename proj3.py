@@ -37,25 +37,26 @@ def relax( u, v, weights, graph ):
 		graph[ v ][0] = ( graph[ u ][0] + weights[ (u, v) ] )
 		graph[ v ][1] = u
 
+
+# This algorithm takes O( V + VlgV + V( V + E + V + VlgV )
+# 							  O( V^2lgV )
+
 def dijkstra( adjList, weightList ):
 	finishedSet = []		#Contains the elements that have been extracted from the queue
-	
-	#Create the queue from the graph   // Do this in O( V )
-	pq = []
+	pq = []					#Create the queue from the graph Do this in O( V )
 	for key in adjList: pq.append( (adjList[ key ][0 ] , key ) )
-	pq = sorted( pq )
-	while pq:	#This loop will be done V times
+	
+	pq = sorted( pq )		#Initial sort done in O( VlgV )
+	while pq:				#This loop will be done V times
 		finishedSet.append( pq[0] ) 	#add it to S. Takes O( 1 )
-		pq = pq[1:]
+		pq = pq[1:]							#Remove the minimum node. O( V )
 		#relax all the adjacent verices to the current vertex //This has to run O( E ) times 
 		for neighbor in adjList[ finishedSet[-1][1] ][2] :
 			relax( finishedSet[-1][1] , neighbor, weightList, adjList )
-		#Make sure that PQ is changed correctly
+
+		#Update the distance approximations in pq and then sort it O( V )
 		for i, each in enumerate(pq): pq[i] = ( adjList[ pq[i][1] ][0] , pq[i][1] )
-		pq = sorted( pq )
-	print( "\t[!]Output" )
-	for each in finishedSet: print(each)
-	for each in adjList: print( "{} is parent of {}".format(adjList[each][1], each) )
+		pq = sorted( pq ) 				#Sort based on the updated distances O( VlgV )
 
 #Takes a filename creates a list of couples
 def createEdgeList( filename ):
