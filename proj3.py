@@ -38,7 +38,22 @@ def relax( u, v, weights, graph ):
 		graph[ v ][1] = u
 
 def dijkstra( adjList, weightList ):
-	print( "Do Stuff" )
+	finishedSet = []		#Contains the elements that have been extracted from the queue
+	
+	#Create the queue from the graph   // Do this in O( V )
+	pq = []
+	for key in adjList: pq.append( (adjList[ key ][0 ] , key ) )
+	pq = sorted( pq )
+	while pq:	#This loop will be done V times
+		print( "\t[!]DEBUG PRINT OF QUEUE [!]\n{}".format(pq ) )
+		finishedSet.append( pq[0] ) 	#add it to S. Takes O( 1 )
+		pq = pq[1:]							#extract the min. Takes O( V )
+		#relax all the adjacent verices to the current vertex //This has to run O( E ) times 
+		for neighbor in adjList[ finishedSet[-1][1] ][2] :
+			relax( finishedSet[-1][1] , neighbor, weightList, adjList )
+		for each in adjList: print( "{} => {}".format( each, adjList[each] ) )
+			#for each adjacent vertex, find it in O(V).
+			#update it but dont reorder 
 
 #Takes a filename creates a list of couples
 def createEdgeList( filename ):
@@ -101,9 +116,9 @@ def main():
 	initSingleSource( graph, source )
 
 	#Run Dijkstras
+	dijkstra( graph, weights)
+	
 
-	relax( 'A', 'C', weights, graph )
-	for key in graph: print( "{} => {} ".format( key, graph[key] ) )
 	#Run Shortest Reliable Path
 
 if __name__ == "__main__" : main()
