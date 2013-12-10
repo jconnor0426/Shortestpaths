@@ -57,6 +57,17 @@ def dijkstra( adjList, weightList ):
 		#Update the distance approximations in pq and then sort it O( V )
 		for i, each in enumerate(pq): pq[i] = ( adjList[ pq[i][1] ][0] , pq[i][1] )
 		pq = sorted( pq ) 				#Sort based on the updated distances O( VlgV )
+	return finishedSet
+
+#Last function for Dijkstra. This expects a list of couples, in the form 
+		# ( distance, node )
+def outputDijkstra( finishedSet, source ):
+	file = open( "output.txt", 'w' )
+	file.write( "Dijkstra\n" )
+	file.write( "Source : {}\n".format( source ) )
+	for each in finishedSet:
+		file.write( "NODE {} : {}\n".format( each[1], each[0] ) )
+	file.write( "End Dijkstra\n" )
 
 #Takes a filename creates a list of couples
 def createEdgeList( filename ):
@@ -119,8 +130,7 @@ def main():
 	initSingleSource( graph, source )
 
 	#Run Dijkstras
-	dijkstra( graph, weights)
-	
+	outputDijkstra( dijkstra( graph, weights), source )
 
 	#Run Shortest Reliable Path
 
