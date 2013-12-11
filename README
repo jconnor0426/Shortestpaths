@@ -1,0 +1,43 @@
+#########################################################################################
+#John Connor McLaughlin
+#Programming Assignment 3
+#COP4531
+#December 10, 2013
+#########################################################################################
+
+#INTRODUCTION#
+	This python scripts are designed to be run using python3
+
+#RUNNING THESE PROGRAMS#
+
+	proj3.py: Run the program with python3 supplying a command line argument 
+		of the filename for the file containing the input, followed by Source Node
+		and the k value for shortest reliable path
+
+		i.e. python3 proj3.py input3.txt A 2
+
+
+#EXPECTED INPUT#
+
+File containing list of edges to a graph in the format 
+
+#comment line
+UD / D
+startVertex	endVertex Weight
+startVertex	endVertex Weight
+startVertex	endVertex Weight
+startVertex	endVertex Weight
+
+Each edge should be seperated by newline characters
+There should be no lines in the file with no characters on it
+There should be one comment line at the start of the file 
+
+#EXPECTED OUTPUT#
+
+The program will output to a file out.txt.
+	It will contain the shortest path from the source to each node 
+	It will contain the shortest reliable path results 
+
+#Note
+	Shortest Reliable Path doesn't work. Hopefully, this will be enough work 
+	that you give me some points. 

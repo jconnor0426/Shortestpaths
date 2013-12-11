@@ -59,15 +59,6 @@ def dijkstra( adjList, weightList ):
 		pq = sorted( pq ) 				#Sort based on the updated distances O( VlgV )
 	return finishedSet
 
-#Last function for Dijkstra. This expects a list of couples, in the form 
-		# ( distance, node )
-def outputDijkstra( finishedSet, source ):
-	file = open( "output.txt", 'w' )
-	file.write( "Dijkstra\n" )
-	file.write( "Source : {}\n".format( source ) )
-	for each in finishedSet:
-		file.write( "NODE {} : {}\n".format( each[1], each[0] ) )
-	file.write( "End Dijkstra\n" )
 
 #Takes a filename creates a list of couples
 def createEdgeList( filename ):
@@ -95,25 +86,40 @@ def recurse( k, node, weight, adjList, source ):
 	else:
 		for each in adjList:
 				nodeValue = float( "inf" )
-				if weight[ (each, node ) ]:  
-					if table[ each, k-1]:
-						nodeValue = table[ each, k-1] + weight[ ( each, node ) ]
-					else:
-						nodeValue = recurse( k-1, each, weight, adjList, source ) + weight[ (each, node ) ]
-				if table[ node, k ] :
+				try:
+					if weight[ (each, node ) ]:  
+						try:
+							nodeValue = table[ each, k-1] + weight[ ( each, node ) ]
+						except:
+							nodeValue = recurse( k-1, each, weight, adjList, source ) + weight[ (each, node ) ]
+				except:
+					pass
+				try:
 					if nodeValue < table[ node, k]: 
 						table[ node, k ] = nodeValue
-				else:
+				except:
 					table[ node, k ] = nodeValue
 
 	return table[ node, k ]
-					
-				
-						 
 
-			
-			
-	return [ node, k ]
+#Last function for Dijkstra. This expects a list of couples, in the form 
+		# ( distance, node )
+def outputDijkstra( finishedSet, source, graph, k ):
+	file = open( "out.txt", 'w' )
+	file.write( "Dijkstra\n" )
+	file.write( "Source : {}\n".format( source ) )
+	for each in finishedSet:
+		file.write( "NODE {} : {}\n".format( each[1], each[0] ) )
+	file.write( "End Dijkstra\n" )
+	file.write( "\n\nShortest Reliable Paths Algorithm\n" )
+	file.write( "Integer K: {} Source : {}\n".format( k, source ) )
+	for each in graph:
+		try:
+			file.write("NODE {}: {}\n".format( each, table[each, k] ) )
+		except:
+			file.write("NODE {}: None\n".format( each ) )
+	file.write( "End Shortest Reliable Paths Algorithm\n" )
+
 
 def main():
 	if len( sys.argv ) < 4:  
@@ -157,14 +163,14 @@ def main():
 	#Check that given source exists
 	initSingleSource( graph, source )
 
-	#Run Dijkstras
-	outputDijkstra( dijkstra( graph, weights), source )
 
 	#Run Shortest Reliable Path
-	#global table
-	#for each in graph:
-#		recurse( len( graph ), each , weights, graph, source )
-#	print( table )
-
+	global table
+	for each in graph:
+		recurse( len( graph ) -1, each , weights, graph, source )
+	
+#Run Dijkstras
+	outputDijkstra( dijkstra( graph, weights), source , graph, k_value)
 	#I almost had it T, I really did =(
+
 if __name__ == "__main__" : main()
