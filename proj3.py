@@ -86,6 +86,34 @@ def createEdgeList( filename ):
 		weights[ (tup[0], tup[1] ) ] = int( tup[2] )
 	return type, edgeList, weights
 
+table = {}
+def recurse( k, node, weight, adjList, source ):
+	global table
+	if k == 1 : 
+		if node == source: table[ node, k ] = float( "inf" )
+		else:	table[node, k ] = 0 
+	else:
+		for each in adjList:
+				nodeValue = float( "inf" )
+				if weight[ (each, node ) ]:  
+					if table[ each, k-1]:
+						nodeValue = table[ each, k-1] + weight[ ( each, node ) ]
+					else:
+						nodeValue = recurse( k-1, each, weight, adjList, source ) + weight[ (each, node ) ]
+				if table[ node, k ] :
+					if nodeValue < table[ node, k]: 
+						table[ node, k ] = nodeValue
+				else:
+					table[ node, k ] = nodeValue
+
+	return table[ node, k ]
+					
+				
+						 
+
+			
+			
+	return [ node, k ]
 
 def main():
 	if len( sys.argv ) < 4:  
@@ -133,5 +161,10 @@ def main():
 	outputDijkstra( dijkstra( graph, weights), source )
 
 	#Run Shortest Reliable Path
+	#global table
+	#for each in graph:
+#		recurse( len( graph ), each , weights, graph, source )
+#	print( table )
 
+	#I almost had it T, I really did =(
 if __name__ == "__main__" : main()
